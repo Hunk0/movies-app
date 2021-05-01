@@ -184,7 +184,7 @@ export default class Categoria {
     public async getNewer(){
         try {
             const peliculas = await this.repository.createQueryBuilder("pelicula")
-            .where("DATE(CURRENT_DATE) - DATE(estreno) <= 21")
+            .where("DATEDIFF(CURRENT_DATE,estreno) <= 21")
             .getMany();
         
             return peliculas;

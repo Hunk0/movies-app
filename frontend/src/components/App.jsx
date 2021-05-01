@@ -15,19 +15,6 @@ function App() {
 
   function handleAdd(newMovie){
     setAddedMovies([...addedMovies, newMovie]);
-
-
-    /*
-
-    const estrenodate = new Date(`${estreno} 12:00:00`);
-    const actualdate = new Date();
-
-    const diff =(actualdate.getTime() - estrenodate.getTime()) / 1000;
-    diff /= (60 * 60 * 24 * 7);
-
-    if(Math.abs(Math.round(diff)) <= 21){
-
-    }*/
   }
 
   function handleMarkAsSeen(pid){
@@ -43,7 +30,7 @@ function App() {
       <Content style={{ padding: '24px 50px', minHeight: '90vh' }}>
           <FeaturedList addedMovies={addedMovies}/>
           <br/><br/>
-          <AllResultsList seenMovies={seenMovies} addedMovies={addedMovies} onRate={handleMarkAsSeen}/>
+          <AllResultsList seenMovies={seenMovies} addedMovies={addedMovies.length} onRate={handleMarkAsSeen}/>
       </Content>
     </React.Fragment>
   );

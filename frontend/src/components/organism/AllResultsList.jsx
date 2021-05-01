@@ -13,15 +13,22 @@ const contentStyle = {
 const { SubMenu } = Menu;
 
 function AllResultsList({addedMovies, ...props}) {
+    const [addedItems, setAddedItems] = useState(addedMovies);
     const [items, setItems] = useState(undefined);
     const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(true)
     const [useFilters, setUseFilters] = useState(false);
 
     useEffect(() => {
-        if(!items || error){
-            getItems()
+        if(loading || error){
+            getItems();
         }
-    }, [items, error])
+
+        if(addedMovies > addedItems){
+            setAddedItems(addedMovies);
+            getItems();
+        }
+    }, [items, error, loading, addedMovies, addedItems])
 
     function handleFilter(query){
         getItems(`?${query}`);
@@ -37,10 +44,13 @@ function AllResultsList({addedMovies, ...props}) {
         .catch(err => {
             setError(true);
         })
+        .finally(() => {
+            setLoading(false);
+        })
     }
 
 
-    if(!items) return (
+    if(loading) return (
         <Card title={useFilters?"Resultados...":"Todas las peliculas"}>
             {Array.apply(0, Array(4)).map((item, index) => <MovieCard key={index}/>)}
         </Card>
@@ -62,7 +72,6 @@ function AllResultsList({addedMovies, ...props}) {
             <Divider />
             
             {items.map(item => <MovieCard key={item.peliculaId} {...item} {...props}/> )}
-            {addedMovies.map(item => <MovieCard key={item.peliculaId} {...item} {...props}/> )}
         </Card>
     )
 }
